@@ -3,16 +3,25 @@ const port = process.env.PORT || 3000
 
 const app = express()
 
+app.use(express.json())
+
+let sensorData = [{
+    id: 1,
+    message: 'Hello from Node'
+}]
+
 app.get('/data', (req, res) => {
-    res.send(data)
+    res.send(sensorData)
 })
 
 app.post('/postdata', (req, res) => {
-	let data = req.body.data; // your data
-    // do something with that data (write to a DB, for instance)
-	res.status(200).json({
-		message: "Data received successfully"
-	});
+    let data = {
+        id: sensorData.length + 1,
+        message: req.body.message
+    }
+    console.log(req.body)
+    sensorData.push(data)
+    res.send(data)
 });
 
 app.listen(port, () => {
