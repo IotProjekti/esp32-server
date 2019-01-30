@@ -5,23 +5,23 @@ const app = express()
 
 app.use(express.json())
 
-let sensorData = [{
-    id: 1,
-    message: 'Hello from Node'
-}]
+let sensorData = []
 
 app.get('/data', (req, res) => {
     res.send(sensorData)
 })
 
 app.post('/postdata', (req, res) => {
-    let data = {
-        id: sensorData.length + 1,
-        message: req.body.message
+    let value = req.body.value
+    if (sensorData.length < 10) {
+        sensorData.push(value)
+    } else {
+        sensorData.pop()
+        sensorData.unshift(value)
     }
-    console.log(req.body)
-    sensorData.push(data)
-    res.send(data)
+    console.log(sensorData)
+
+    res.send(sensorData)
 });
 
 app.listen(port, () => {
