@@ -11,7 +11,7 @@ try:
 
     SSID = "hh3dlabs"
     PASSWORD = "3dlabshh12345"
-    port = 400
+    port = 500
     wlan = None
     s = None
 
@@ -24,25 +24,34 @@ try:
         while(wlan.ifconfig()[0] == '0.0.0.0'):  # wait for connection
             sleep_ms(1)
         sleep_ms(1000)  # hold on for 1 second
-        print("Connect to WLAN")
-        #url = "https://shielded-tor-11299.herokuapp.com/postdata"
-        #headers = {'content-type': 'application/json'}
-        #data = {'message': 'WLAN connected'}
-        #jsonObj = json.dumps(data)
-        #resp = urequests.post(url, data=jsonObj, headers=headers)
+        print("Connecting to WLAN")
+        # url = "https://shielded-tor-11299.herokuapp.com/postdata"
+        # headers = {'content-type': 'application/json'}
+        # data = {'message': 'WLAN connected'}
+        # jsonObj = json.dumps(data)
+        # resp = urequests.post(url, data=jsonObj, headers=headers)
         sleep_ms(1000)  # hold on for 1 second
-        print("Request was sent!")
+        # print("Request was sent!")
 
     def main():
         connectWifi(SSID, PASSWORD)
-        try:
-            url = "https://shielded-tor-11299.herokuapp.com/postdata"
-            headers = {'content-type': 'application/json'}
-            data = {"value": "jes"}
-            jsonObj = json.dumps(data)
-            resp = urequests.post(url, data=jsonObj, headers=headers)
-        except Exception as e:
-            print(e)
+        minuteCounter = 0
+        print("In main")
+        while True:
+            sleep_ms(1000)
+            minuteCounter += 1
+            if (minuteCounter % 60 == 0):
+                try:
+                    url = "https://shielded-tor-11299.herokuapp.com/postdata"
+                    headers = {'content-type': 'application/json'}
+                    data = {"value": minuteCounter}
+                    jsonObj = json.dumps(data)
+                    resp = urequests.post(url, data=jsonObj, headers=headers)
+                    print("Request was sent! Value: " + str(minuteCounter))
+                    minuteCounter = 0
+                except Exception as e:
+                    connectWifi(SSID, PASSWORD)
+                    print(e)
 
     main()
 
