@@ -8,12 +8,17 @@ try:
     import urequests
     import machine
     import json
+    import gc
+    import micropython
 
     SSID = "hh3dlabs"
     PASSWORD = "3dlabshh12345"
     port = 500
     wlan = None
     s = None
+
+    # sensor pins are set here
+    sensor = HCSR04(trigger_pin=16, echo_pin=0)
 
     def connectWifi(ssid, passwd):  # function to connect to the Web
         global wlan  # declare a WLAN object
@@ -25,30 +30,47 @@ try:
             sleep_ms(1)
         sleep_ms(1000)  # hold on for 1 second
         print("Connecting to WLAN")
-        # url = "https://shielded-tor-11299.herokuapp.com/postdata"
-        # headers = {'content-type': 'application/json'}
-        # data = {'message': 'WLAN connected'}
-        # jsonObj = json.dumps(data)
-        # resp = urequests.post(url, data=jsonObj, headers=headers)
-        sleep_ms(1000)  # hold on for 1 second
-        # print("Request was sent!")
 
     def main():
+
+        url = "https://shielded-tor-11299.herokuapp.com/postdata"
+        headers = {'content-type': 'application/json'}
+
+        values = []
+        counter = 0  # sensor value counter
+
         connectWifi(SSID, PASSWORD)
-        minuteCounter = 0
-        print("In main")
+        secondsCounter = 0
         while True:
-            sleep_ms(1000)
-            minuteCounter += 1
-            if (minuteCounter % 60 == 0):
+            counter += 1
+            distance = sensor.distance_cm()  # get the distance
+            message = "Distance: " + str(int(distance)) + " cm"
+            if(len(values) <= 30):  # start filling the values list
+                values.insert(0, int(distance))
+            else:  # if the list has 30 values, start cycling the list
+                values.remove(values[29])
+                values.insert(0, int(distance))
+
+            if(counter == 30):  # if 30 values have been added, count the average distance
+                avg = sum(values) / len(values)
+                counter = 0
+            sleep_ms(1000)  # wait one seconds before measuring again
+            secondsCounter += 1
+            print("Seconds count: " + str(secondsCounter) + " " + message)
+
+            if (secondsCounter % 30 == 0):
+                gc.collect()  # Collect memory garbage
+                # micropython.mem_info()
+                # print('Initial free: {} allocated: {}'.format(
+                #     gc.mem_free(), gc.mem_alloc()))
                 try:
-                    url = "https://shielded-tor-11299.herokuapp.com/postdata"
-                    headers = {'content-type': 'application/json'}
-                    data = {"value": minuteCounter}
+                    data = {"value": avg}
                     jsonObj = json.dumps(data)
                     resp = urequests.post(url, data=jsonObj, headers=headers)
-                    print("Request was sent! Value: " + str(minuteCounter))
-                    minuteCounter = 0
+                    print("Request was sent! Value: " + str(avg))
+                    resp.close()  # close the response socket to free memory
+                    secondsCounter = 0
+
                 except Exception as e:
                     connectWifi(SSID, PASSWORD)
                     print(e)
@@ -56,4 +78,4 @@ try:
     main()
 
 except Exception as e:
-    print(e)
+    print("Error 2")
