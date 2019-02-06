@@ -15,17 +15,21 @@ let yellow = false
 let green = false
 
 app.get('/', (req, res) => {
-    if (sensorData[sensorData.length - 1] < 100) {
+    let currValue = sensorData[sensorData.length - 1]
+    if (currValue < 100) {
         res.render('trafficlight.hbs', {
-            green: true
+            green: true,
+            value: currValue.toString()
         })
-    } else if (sensorData[sensorData.length - 1] >= 100 && sensorData[sensorData.length - 1] < 200) {
+    } else if (currValue >= 100 && currValue < 200) {
         res.render('trafficlight.hbs', {
-            yellow: true
+            yellow: true,
+            value: currValue.toString()
         })
     } else {
         res.render('trafficlight.hbs', {
-            red: true
+            red: true,
+            value: currValue.toString()
         })
     }
 })
