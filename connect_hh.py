@@ -13,12 +13,12 @@ try:
 
     SSID = "hh3dlabs"
     PASSWORD = "3dlabshh12345"
-    port = 500
+    port = 200
     wlan = None
     s = None
 
     # sensor pins are set here
-    sensor = HCSR04(trigger_pin=16, echo_pin=0)
+    sensor = HCSR04(trigger_pin=17, echo_pin=4)
 
     def connectWifi(ssid, passwd):  # function to connect to the Web
         global wlan  # declare a WLAN object
