@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="refresh" content="15">
+    <title>ESP32 Trafficlight</title>
+    <link rel='stylesheet' type='text/css' href='/css/main.css' />
+</head>
+
+<body>
+    <div class="wrapper">
+        <div>
+            {{#if green}}
+            <div class="box" style="background-color: green"></div>
+            {{else}}
+            <div class="box"></div>
+            {{/if}}
+        </div>
+        <div>
+            {{#if yellow}}
+            <div class="box" style="background-color: yellow"></div>
+            {{else}}
+            <div class="box"></div>
+            {{/if}}
+        </div>
+        <div>
+            {{#if red}}
+            <div class="box" style="background-color: red"></div>
+            {{else}}
+            <div class="box"></div>
+            {{/if}}
+        </div>
+    </div>
+    <p>If 30 seconds average < 100 color=green</p> <p>If 30 seconds average < 200 color=yellow</p> <p>If 30 seconds
+                average < 300 color=red</p> <p>Last added value: {{ value }}</p>
+</body>
+
+</html>
