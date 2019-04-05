@@ -11,8 +11,8 @@ try:
     import gc
     import micropython
 
-    SSID = "hh3dlabs"
-    PASSWORD = "3dlabshh12345"
+    SSID = "ZyXEL_2109"#"hh3dlabs"
+    PASSWORD = "PKQK8JJKJ7NJL"#"3dlabshh12345"
     port = 200
     wlan = None
     s = None
