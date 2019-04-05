@@ -15,7 +15,7 @@ try:
     wlan = None
     s = None
 
-    d = dht.DHT11(Pin(14))
+    d = dht.DHT11(Pin(34))
 
     #sensor pins are set here
     #pot = ADC(Pin(34))
@@ -47,7 +47,8 @@ try:
         while True:
             counter += 1
             temperature = d.temperature()  # get the temperature
-            message = "Temperature: " + str(int(temperature))
+            print(temperature)
+            message1 = "Temperature: " + str(int(temperature))
             if(len(values1) <= 30):  # start filling the values list
                 values1.insert(0, int(temperature))
             else:  # if the list has 30 values, start cycling the list
@@ -55,12 +56,15 @@ try:
                 values1.insert(0, int(temperature))
 
             humidity = d.humidity()  # get the humidity
-            message = "Humidity: " + str(int(humidity))
+            print(humidity)
+            message2 = "Humidity: " + str(int(humidity))
             if(len(values2) <= 30):  # start filling the values list
                 values2.insert(0, int(humidity))
             else:  # if the list has 30 values, start cycling the list
                 values2.remove(values2[29])
                 values2.insert(0, int(humidity))
+
+            sleep_ms(2000)
 
             if(counter == 30):  # if 30 values have been added, count the average temperature
                 avg1 = sum(values1) / len(values1)
@@ -68,7 +72,7 @@ try:
                 counter = 0
             sleep_ms(1000)  # wait one seconds before measuring again
             secondsCounter += 1
-            print("Seconds count: " + str(secondsCounter) + " " + message)
+            print("Seconds count: " + str(secondsCounter) + " " + message1 + " " + message2)
 
             if (secondsCounter % 30 == 0):
                 gc.collect()  # Collect memory garbage
