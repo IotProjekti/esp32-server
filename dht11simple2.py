@@ -4,7 +4,7 @@ def read(self):
     #if self.config['dht_type'] == 11:
     #  d = dht.DHT22(machine.Pin(self.config["gpio"]))
     #else:
-    d = dht.DHT11(machine.Pin(34))
+    d = dht.DHT11(machine.Pin(14))
       
     try:
       d.measure()

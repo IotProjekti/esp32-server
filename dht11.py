@@ -15,12 +15,8 @@ try:
     wlan = None
     s = None
 
-    d = dht.DHT11(Pin(34))
-
     #sensor pins are set here
-    #pot = ADC(Pin(34))
-    #pot.width(ADC.WIDTH_10BIT)
-    #pot.atten(ADC.ATTN_6DB)
+    d = dht.DHT11(Pin(14))
 
     def connectWifi(ssid, passwd):  # function to connect to the Web
         global wlan  # declare a WLAN object
@@ -46,6 +42,9 @@ try:
         
         while True:
             counter += 1
+            measure = d.measure()
+            print(measure)
+
             temperature = d.temperature()  # get the temperature
             print(temperature)
             message1 = "Temperature: " + str(int(temperature))
@@ -80,10 +79,10 @@ try:
                 # print('Initial free: {} allocated: {}'.format(
                 #     gc.mem_free(), gc.mem_alloc()))
                 try:
-                    data = {"value": avg1 + avg2}
+                    data = {"value2": avg1, "value1": avg1, "value": avg2}
                     jsonObj = json.dumps(data)
                     resp = urequests.post(url, data=jsonObj, headers=headers)
-                    print("Request was sent! Value: " + str(avg1 + avg2))
+                    print("Request was sent! Value: " + str(avg1) + " " + str(avg2))
                     resp.close()  # close the response socket to free memory
                     secondsCounter = 0
 
