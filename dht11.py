@@ -79,7 +79,7 @@ try:
                 # print('Initial free: {} allocated: {}'.format(
                 #     gc.mem_free(), gc.mem_alloc()))
                 try:
-                    data = {"value2": avg1, "value1": avg1, "value": avg2}
+                    data = {"value": avg1, "value1": avg1, "value2": avg2}
                     jsonObj = json.dumps(data)
                     resp = urequests.post(url, data=jsonObj, headers=headers)
                     print("Request was sent! Value: " + str(avg1) + " " + str(avg2))
