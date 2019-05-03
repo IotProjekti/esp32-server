@@ -31,7 +31,7 @@ try:
 
     def main():
 
-        url = "http://193.166.13.253:3006/postdata"
+        url = "https://shielded-tor-11299.herokuapp.com/postdata"
         headers = {'content-type': 'application/json'}
 
         counter = 0
